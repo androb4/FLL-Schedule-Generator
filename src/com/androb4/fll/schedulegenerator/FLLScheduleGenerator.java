@@ -36,9 +36,9 @@ public class FLLScheduleGenerator {
 	21272,
 	22097,
 	22098,
-	22099,
+	22099}; /*,
 	22100
-};
+};*/
 	
 	/* Configs */
 	private static int kStartTime = 510; // 8:30 in minutes
@@ -69,29 +69,35 @@ public class FLLScheduleGenerator {
 			int t = kStartTime;
 			int kLastMatchTime = kStartTime - kMatchInterval;
 			Team[] teams = new Team[2];
-			//teams[0] = getRandomTeam();
-			//teams[1] = getRandomTeam(teams[0]);
-			//matchList.add(new Match(m, t, teams));
-			createShchedule:
+			
+			createSchedule:
 			while(!isEnoughMatches()) {
 				if(t == kLastMatchTime+kMatchInterval) {
+					
 					teams[0] = getRandomTeam();
 					long time = System.currentTimeMillis();
 					while(((t - teams[0].lastMatchTime()) < kPitTimeMin) || ((kNumMatchesEach - teams[0].matches().size()) <= 0)) {
 						teams[0] = getRandomTeam();
-						if(System.currentTimeMillis() - time > 100) {
-							break createShchedule;
+						if(System.currentTimeMillis() - time > 50) {
+							break createSchedule;
 						}
 					}
+					
+					if(isLastTeam() && teamList.size() % 2 != 0) {
+						//System.out.println("ysy");
+						teams[1] = getRandomTeam(teams[0]);
+						matchList.add(new Match(m, t, teams));
+						break createSchedule;
+					}
+					
 					teams[1] = getRandomTeam(teams[0]);
 					time = System.currentTimeMillis();
 					while((t - teams[1].lastMatchTime()) < kPitTimeMin || kNumMatchesEach - teams[1].matches().size() <= 0) {
 						teams[1] = getRandomTeam(teams[0]);
-						if(System.currentTimeMillis() - time > 100) {
-							break createShchedule;
+						if(System.currentTimeMillis() - time > 50) {
+							break createSchedule;
 						}
 					}
-					isLastTeam();
 					matchList.add(new Match(m, t, teams));
 					kLastMatchTime = t;
 					m++;
@@ -149,7 +155,6 @@ public class FLLScheduleGenerator {
 				count++;
 			}
 		}
-		System.out.println(count + " ");
-		return count<0?true:false;
+		return count<2;
 	}
 }
