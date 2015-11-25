@@ -50,7 +50,6 @@ public class FLLScheduleGenerator {
 	private static int kPitTimeMin = 30;
 	private static int kMinTimeBetweenLast;
 	private static int kBreaks = 0;
-	private static boolean isScheduleDone = false;
 	
 	public static List<Team> teamList = new ArrayList<Team>();
 	public static List<Match> matchList = new ArrayList<Match>();
@@ -84,7 +83,6 @@ public class FLLScheduleGenerator {
 					}
 					
 					if(isLastTeam() && teamList.size() % 2 != 0) {
-						//System.out.println("ysy");
 						teams[1] = getRandomTeam(teams[0]);
 						matchList.add(new Match(m, t, teams));
 						break createSchedule;
@@ -106,8 +104,6 @@ public class FLLScheduleGenerator {
 			}
 			//System.out.println(matchList.size());
 		}
-		
-		System.out.println();
 		
 		// Print out schedule for debugging
 		for(Match match:matchList) {
@@ -140,12 +136,6 @@ public class FLLScheduleGenerator {
 			}
 		}
 		return true;
-	}
-	
-	public static void printTeamList() {
-		for(Team team:teamList) {
-			System.out.println(team.teamNumber() + " " + team.matches().size());
-		}
 	}
 	
 	public static boolean isLastTeam() {
