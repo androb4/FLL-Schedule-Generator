@@ -23,7 +23,21 @@ public class Team {
 		return this.team_number;
 	}
 	
-	public Match[] matches() {
-		return this.matches.toArray(new Match[this.matches.size()]);
+	public List<Match> matches() {
+		return this.matches;
+	}
+	
+	public Match lastMatch() {
+		if(matches.size() == 0) {
+			return null;
+		}
+		return matches.get(matches.size()-1);
+	}
+	
+	public int lastMatchTime() {
+		if(lastMatch() != null) {
+			return lastMatch().matchTime();
+		}
+		return 0;
 	}
 }
