@@ -5,32 +5,29 @@ import java.util.List;
 
 public class FLLScheduleGenerator {
 
-	private static int demo_teams[] = // { 16, 118, 254, 441, 610, 624, 1114,
-										// 1484, 2587, 3847, 5892};
-	{ 1894, 1896, 1897, 2798, 3583, 6710, 8836, 8848, 11519, 13030, 13033, 14039, 15110, 17603, 17605, 18320, 18321,
-			19315, 19966, 20046, 20145, 20185, 20288, 20523, 21240, 21270, 21271, 21272, 22097, 22098,
-			22099}; //, 22100 };
-
 	/* Configs */
 	private static int kStartTime = 510; // 8:30 in minutes
 	private static int kNumMatchesEach = 3;
 	private static int kNumFields = 6;
-	private static String kTableNames[] = {"This", "is", "a", "table", "name", "PERIOD"};
+	private static String kTableNames[] = {"Table 1", "Table 2", "Table 3", "Table 4", "Table 5", "Table 6"};
 	private static int kNumSets = 3;
 	private static int kMatchInterval = 5;
-	private static int kPitTimeMin = 30;
+	private static int kPitTimeMin = 5;
 	private static int kMinTimeBetweenLast;
 	private static int kBreaks = 0;
 
 	public static Team[] teamList;
+	public static Table[] tableList = new Table[kTableNames.length];
 	public static List<Match> matchList = new ArrayList<Match>();
 
 	public static void main(String[] args) {
+
+		for(int i=0; i<tableList.length; i++) {
+			tableList[i] = new Table(i+1, kTableNames[i]);
+		}
 		
 		teamList = new Team[TeamListDeserializer.getTeams().length];
 		teamList = TeamListDeserializer.getTeams();
-
-		System.out.println(TeamListDeserializer.getTeams().length);
 		
 		while (!isEnoughMatches()) {
 			matchList.clear();
@@ -56,12 +53,12 @@ public class FLLScheduleGenerator {
 						//System.out.println(isLastTeam());
 						if (isLastTeam() && teamList.length % 2 != 0) {
 							teams[1] = getRandomTeam(teams);
-							matchList.add(new Match(m, t, teams));
+							matchList.add(new Match(m, t, teams, new Table[]{tableList[0], tableList[1]}));
 							break createSchedule;
 						}
 					}
 
-					matchList.add(new Match(m, t, teams));
+					matchList.add(new Match(m, t, teams, new Table[]{tableList[3*((m-1)%3)-((m-1)%3)], tableList[2*((m-1)%3)+1]}));
 					kLastMatchTime = t;
 					m++;
 				}
@@ -73,12 +70,14 @@ public class FLLScheduleGenerator {
 		// Print out schedule for debugging
 		for (Match match : matchList) {
 			System.out.print(match.matchNumber() + ",");
-			for (Team team : match.teams()) {
-				System.out.print(" " + team.teamNumber() + ",");
+			for(int t=0; t<match.teams().length; t++) {
+				System.out.print(match.tables()[t].getName() + " " + match.teams()[t].teamNumber() + ", ");
 			}
-			System.out.print(" " + match.matchTime());
+			System.out.print(match.matchTime());
 			System.out.println();
 		}
+		
+		MatchScheduleSerializer.serializeSchedule(matchList.toArray(new Match[matchList.size()]), tableList);
 	}
 
 	public static Team getRandomTeam() {

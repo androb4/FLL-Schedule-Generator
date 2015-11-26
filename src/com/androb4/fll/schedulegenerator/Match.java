@@ -6,7 +6,7 @@ import java.util.List;
 public class Match {
 	private int matchNumber;
 	private int matchTime;
-	private String table;
+	private Table[] tables;
 	private List<Team> teams = new ArrayList<Team>();
 	
 	public Match(int matchNumber, int matchTime) {
@@ -23,6 +23,16 @@ public class Match {
 		this.matchTime = matchTime;
 	}
 	
+	public Match(int matchNumber, int matchTime, Team teams[], Table[] tables) {
+		for(Team team:teams) {
+			this.teams.add(team);
+			team.addMatch(this);
+		}
+		this.matchNumber = matchNumber;
+		this.matchTime = matchTime;
+		this.tables = tables;
+	}
+	
 	public int matchNumber() {
 		return this.matchNumber;
 	}
@@ -33,5 +43,9 @@ public class Match {
 	
 	public int matchTime() {
 		return this.matchTime;
+	}
+	
+	public Table[] tables() {
+		return this.tables;
 	}
 }
