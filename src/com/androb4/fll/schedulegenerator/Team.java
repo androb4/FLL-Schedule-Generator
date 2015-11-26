@@ -5,14 +5,18 @@ import java.util.List;
 
 public class Team {
 	
-	private int team_number;
-	private String teanName;
+	private int teamNumber;
+	private String teamName;
+	private String teamOrganization;
 	private int last_match_minutes;
 	
 	private List<Match> matches = new ArrayList<Match>();
 	
-	public Team(int team_number) {
-		this.team_number = team_number;
+	public Team() {
+	}
+	
+	public Team(int teamNumber) {
+		this.teamNumber = teamNumber;
 	}
 	
 	public void addMatch(Match match) {
@@ -20,7 +24,11 @@ public class Team {
 	}
 	
 	public int teamNumber() {
-		return this.team_number;
+		return this.teamNumber;
+	}
+	
+	public String teamName() {
+		return this.teamName;
 	}
 	
 	public List<Match> matches() {
@@ -39,5 +47,17 @@ public class Team {
 			return lastMatch().matchTime();
 		}
 		return 0;
+	}
+	
+	public void setTeamNumber(int teamNumber) {
+		this.teamNumber = teamNumber;
+	}
+	
+	public void setTeamName(String teamName) {
+		this.teamName = teamName;
+	}
+	
+	public void setTeamOrganization(String teamOrganization) {
+		this.teamOrganization = teamOrganization;
 	}
 }
