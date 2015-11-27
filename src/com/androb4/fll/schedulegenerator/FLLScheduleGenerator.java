@@ -43,10 +43,10 @@ public class FLLScheduleGenerator {
 				if (t >= kLastMatchTime + kMatchInterval && !isBreak(t)) {
 					for (int i = 0; i <teams.length; i++) {
 						teams[i] = getRandomTeam(teams);
-						long time = System.currentTimeMillis();
+						long timeout = System.currentTimeMillis();
 						while (((t - teams[i].lastMatchTime()) < kPitTimeMin) || ((kNumMatchesEach - teams[i].matches().size()) <= 0)) {
 							teams[i] = getRandomTeam(teams);
-							if (System.currentTimeMillis() - time > 50) {
+							if (System.currentTimeMillis() - timeout > 50) {
 								break createSchedule;
 							}
 						}
