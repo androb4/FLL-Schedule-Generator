@@ -8,7 +8,6 @@ public class Team {
 	private int teamNumber;
 	private String teamName;
 	private String teamOrganization;
-	private int last_match_minutes;
 	
 	private List<Match> matches = new ArrayList<Match>();
 	
@@ -59,5 +58,9 @@ public class Team {
 	
 	public void setTeamOrganization(String teamOrganization) {
 		this.teamOrganization = teamOrganization;
+	}
+	
+	public String getTeamOrganization() {
+		return teamOrganization;
 	}
 }
